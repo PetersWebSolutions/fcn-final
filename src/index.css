@@ -1,0 +1,197 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", "Inter", ui-sans-serif, sans-serif;
+
+  /* Deep navy scale */
+  --color-navy-950: #08142b;
+  --color-navy-900: #0b1b3a;
+  --color-navy-800: #10234a;
+  --color-navy-700: #18315e;
+  --color-navy-600: #213f72;
+  --color-navy-500: #2f5190;
+
+  /* Gold scale */
+  --color-gold-600: #a8801f;
+  --color-gold-500: #c69a35;
+  --color-gold-400: #d8b24d;
+  --color-gold-300: #e6c878;
+  --color-gold-100: #f5ead0;
+  --color-gold-50: #faf4e4;
+
+  /* Warm paper backgrounds */
+  --color-paper: #f7f4ec;
+  --color-paper-deep: #f1ede2;
+  --color-card: #fffdf8;
+
+  --color-ink: #101f3c;
+  --color-ink-soft: #3d4d6b;
+  --color-muted: #6b7790;
+
+  --shadow-soft: 0 1px 2px rgba(16, 35, 74, 0.05), 0 12px 32px -12px rgba(16, 35, 74, 0.14);
+  --shadow-card: 0 1px 2px rgba(16, 35, 74, 0.06), 0 18px 44px -20px rgba(16, 35, 74, 0.22);
+  --shadow-pop: 0 24px 60px -18px rgba(8, 20, 43, 0.45);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+section[id] {
+  scroll-margin-top: 84px;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ---------- Decorative helpers ---------- */
+.dotted-divider {
+  background-image: radial-gradient(circle, rgba(16, 35, 74, 0.18) 1px, transparent 1px);
+  background-size: 7px 7px;
+  background-repeat: repeat-x;
+  background-position: center;
+  height: 7px;
+}
+
+.dotted-divider-light {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.22) 1px, transparent 1px);
+  background-size: 7px 7px;
+  background-repeat: repeat-x;
+  background-position: center;
+  height: 7px;
+}
+
+/* Section eyebrow label */
+.eyebrow {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+/* Subtle paper grain / grid texture */
+.bg-blueprint {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.07) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+.bg-paper-grid {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(16, 35, 74, 0.06) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Marquee for the credential strip */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+
+/* Gentle float for hero badges */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-floaty { animation: floaty 5s ease-in-out infinite; }
+.animate-floaty-slow { animation: floaty 7s ease-in-out 0.6s infinite; }
+
+/* Pulsing open dot */
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
+  70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+.animate-pulse-dot { animation: pulse-ring 2s infinite; }
+
+/* Accordion smooth open */
+.acc-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.acc-panel.open {
+  grid-template-rows: 1fr;
+}
+.acc-panel > div {
+  overflow: hidden;
+}
+
+/* Custom select chevron */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7790' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+
+/* Entrance animation for dynamic lists (re-runs on remount) */
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+.card-in {
+  animation: card-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Thin scrollbar for horizontal strips */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Link underline sweep */
+.link-sweep {
+  position: relative;
+}
+.link-sweep::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1.5px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-sweep:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
