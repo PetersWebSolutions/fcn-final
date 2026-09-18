@@ -41,7 +41,7 @@ export default function BookVisitSticky() {
 
   return (
     <div
-      className={`fixed bottom-6 left-1/2 z-40 -translate-x-1/2 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+      className={`fixed bottom-6 right-20 z-40 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] sm:right-24 ${
         visible && showAfterScroll
           ? "translate-y-0 opacity-100"
           : "pointer-events-none translate-y-24 opacity-0"
