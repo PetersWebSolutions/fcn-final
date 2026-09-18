@@ -69,16 +69,17 @@ export default function Booking() {
     <section id="book" className="relative overflow-hidden bg-paper-deep/60 py-20 lg:py-28">
       <div className="pointer-events-none absolute -right-32 top-24 h-96 w-96 rounded-full bg-gold-100/50 blur-3xl" />
       <div className="relative mx-auto grid max-w-7xl items-start gap-12 px-5 md:px-6 lg:grid-cols-[1fr_1.1fr] lg:gap-14 lg:px-10">
-        {/* Left */}
-        <div>
-          <p className="reveal eyebrow flex items-center gap-3 text-gold-600">
+        {/* Left — now centered */}
+        <div className="text-center">
+          <p className="reveal eyebrow flex items-center justify-center gap-3 text-gold-600 text-center">
             <span className="h-px w-7 bg-gold-500/50" />
             Book a visit
+            <span className="h-px w-7 bg-gold-500/50" />
           </p>
-          <h2 className="reveal mt-4 font-display text-3xl font-extrabold leading-tight text-navy-900 sm:text-4xl lg:text-[2.75rem]" data-reveal-delay="80">
-            Reserve your slot in under a minute
+          <h2 className="reveal mx-auto mt-4 max-w-xl text-center font-display text-3xl font-extrabold leading-tight text-navy-900 sm:text-4xl lg:text-[2.75rem]" data-reveal-delay="80">
+            Reserve your slot in <span className="font-playfair text-[1.25em] font-bold italic leading-[0.9] text-gold-500">under a minute</span>
           </h2>
-          <p className="reveal mt-4 max-w-md text-[0.92rem] leading-relaxed text-ink-soft" data-reveal-delay="160">
+          <p className="reveal mx-auto mt-4 max-w-md text-center text-[0.92rem] leading-relaxed text-ink-soft" data-reveal-delay="160">
             Tell us what you need and when — our team confirms your appointment
             and prepares your vaccines and paperwork before you arrive at Room
             601.
