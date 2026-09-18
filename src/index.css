@@ -1,8 +1,10 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Plus Jakarta Sans", "Inter", ui-sans-serif, sans-serif;
+  --font-playfair: "Playfair Display", serif;
 
   /* Deep navy scale */
   --color-navy-950: #08142b;
@@ -39,7 +41,7 @@ html {
 }
 
 section[id] {
-  scroll-margin-top: 84px;
+  scroll-margin-top: 132px;
 }
 
 body {
@@ -94,13 +96,15 @@ h1, h2, h3, h4, h5 {
   height: 7px;
 }
 
-/* Section eyebrow label */
+/* Section eyebrow label — bigger, bold, centered for section headlines */
 .eyebrow {
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.7rem;
-  letter-spacing: 0.28em;
+  font-weight: 800;
+  font-size: 0.92rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  text-align: center;
+  justify-content: center;
 }
 
 /* Subtle paper grain / grid texture */
@@ -175,7 +179,11 @@ select {
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Link underline sweep */
+/* Playfair Display for Our Priority */
+.font-playfair {
+  font-family: var(--font-playfair);
+}
+
 .link-sweep {
   position: relative;
 }

@@ -23,7 +23,7 @@ const STEPS = [
 
 export default function YellowFever() {
   return (
-    <section id="yellow-fever" className="relative bg-navy-950 pb-0 pt-20 text-white lg:pt-24">
+    <section id="yellow-fever" className="relative bg-navy-950 pb-16 pt-20 text-white lg:pb-20 lg:pt-24">
       <div className="bg-blueprint absolute inset-0" />
       <div className="pointer-events-none absolute -left-40 top-10 h-96 w-96 rounded-full bg-gold-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -right-40 bottom-24 h-96 w-96 rounded-full bg-navy-500/30 blur-3xl" />
@@ -37,8 +37,7 @@ export default function YellowFever() {
           </div>
 
           <h2 className="reveal mt-5 font-display text-3xl font-extrabold leading-[1.12] sm:text-4xl lg:text-[2.75rem]" data-reveal-delay="80">
-            Need a{" "}
-            <span className="text-gold-400">Yellow Fever certificate</span>?
+            Need a <span className="font-playfair text-[1.25em] font-bold italic leading-[0.9] text-gold-400">Yellow Fever certificate?</span>
           </h2>
 
           <p className="reveal mt-5 max-w-lg text-[0.92rem] leading-relaxed text-white/65" data-reveal-delay="160">
@@ -86,21 +85,6 @@ export default function YellowFever() {
             );
           })}
         </ol>
-      </div>
-
-      {/* Travel image divider — floats over the marquee band */}
-      <div className="relative z-10 mx-auto mt-14 max-w-7xl px-5 md:px-6 lg:px-10">
-        <div
-          className="reveal mx-auto -mb-16 max-w-xl overflow-hidden rounded-[1.75rem] shadow-pop ring-1 ring-white/10 lg:-mb-20"
-          data-reveal-delay="120"
-        >
-          <img
-            src="/images/travel-window.jpg"
-            alt="Golden hour view through an airplane window"
-            className="h-40 w-full object-cover sm:h-48"
-            loading="lazy"
-          />
-        </div>
       </div>
     </section>
   );

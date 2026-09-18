@@ -6,12 +6,15 @@ import Services from "./components/Services";
 import Vaccines from "./components/Vaccines";
 import YellowFever from "./components/YellowFever";
 import Marquee from "./components/Marquee";
+import YourDoctors from "./components/YourDoctors";
+import WhyChoose from "./components/WhyChoose";
 import Location from "./components/Location";
 import Testimonials from "./components/Testimonials";
 import Faq from "./components/Faq";
 import Booking from "./components/Booking";
 import Footer from "./components/Footer";
 import ScrollTop from "./components/ScrollTop";
+import BookVisitSticky from "./components/BookVisitSticky";
 
 export default function App() {
   useReveal();
@@ -26,6 +29,8 @@ export default function App() {
         <Vaccines />
         <YellowFever />
         <Marquee />
+        <YourDoctors />
+        <WhyChoose />
         <Location />
         <Testimonials />
         <Faq />
@@ -33,6 +38,7 @@ export default function App() {
       </main>
       <Footer />
       <ScrollTop />
+      <BookVisitSticky />
     </div>
   );
 }

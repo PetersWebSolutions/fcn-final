@@ -70,7 +70,7 @@ export default function Vaccines() {
             <span className="h-px w-7 bg-gold-500/50" />
           </p>
           <h2 className="reveal mt-4 font-display text-3xl font-extrabold leading-tight text-navy-900 sm:text-4xl lg:text-[2.65rem]" data-reveal-delay="80">
-            Protection for every itinerary
+            Protection for every <span className="font-playfair text-[1.25em] font-bold italic leading-[0.9] text-gold-500">itinerary</span>
           </h2>
           <p className="reveal mt-4 text-[0.92rem] leading-relaxed text-ink-soft" data-reveal-delay="160">
             6 travel vaccines · 11 routine &amp; adult vaccines — administered
