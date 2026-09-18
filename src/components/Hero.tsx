@@ -11,7 +11,7 @@ import {
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-paper pt-28 md:pt-32">
+    <section className="relative overflow-hidden bg-paper pt-36 md:pt-44">
       {/* ambient background */}
       <div className="pointer-events-none absolute inset-0 bg-paper-grid opacity-60" />
       <div className="pointer-events-none absolute -left-40 top-10 h-96 w-96 rounded-full bg-gold-100/50 blur-3xl" />
@@ -31,14 +31,14 @@ export default function Hero() {
           </div>
 
           <h1
-            className="reveal mt-6 font-display text-[2.5rem] font-extrabold leading-[1.04] text-navy-900 sm:text-6xl lg:text-[4.1rem]"
+            className="reveal mt-6 font-display text-[13vw] font-extrabold leading-[0.88] tracking-[-0.03em] text-navy-900 xs:text-[12vw] sm:text-6xl lg:text-[4.1rem] sm:leading-[1.04] sm:tracking-normal"
             data-reveal-delay="80"
           >
             Your Health.
             <br />
-            Your Journey. Our
+            Your Journey.
             <br />
-            <span className="text-gold-500">Priority.</span>
+            <span className="font-playfair font-bold italic text-gold-500">Our Priority.</span>
           </h1>
 
           <p className="reveal mt-6 max-w-lg text-[0.98rem] leading-relaxed text-ink-soft" data-reveal-delay="160">
@@ -47,30 +47,21 @@ export default function Hero() {
             quarantine assistance.
           </p>
 
-          <div className="reveal mt-8 flex flex-wrap items-center gap-3" data-reveal-delay="240">
+          <div className="reveal mt-8 flex flex-nowrap items-center gap-2 sm:gap-3" data-reveal-delay="240">
             <a
               href="#book"
-              className="group inline-flex items-center gap-2.5 rounded-full bg-navy-900 px-6 py-3.5 text-sm font-semibold text-white shadow-pop transition-all duration-300 hover:-translate-y-0.5 hover:bg-navy-800"
+              className="group inline-flex flex-1 sm:flex-none items-center justify-center gap-1.5 sm:gap-2.5 whitespace-nowrap rounded-full bg-navy-900 px-4 py-3 text-[0.8rem] font-semibold text-white shadow-pop transition-all duration-300 hover:-translate-y-0.5 hover:bg-navy-800 sm:px-6 sm:py-3.5 sm:text-sm"
             >
-              <Calendar className="h-4.5 w-4.5 text-gold-300 transition-transform duration-300 group-hover:rotate-6" />
-              Book an appointment
+              <Calendar className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-gold-300 transition-transform duration-300 group-hover:rotate-6 shrink-0" />
+              <span className="whitespace-nowrap">Book an appointment</span>
             </a>
             <a
               href="#vaccines"
-              className="group inline-flex items-center gap-2 rounded-full border border-navy-900/15 bg-white px-6 py-3.5 text-sm font-semibold text-navy-900 transition-all duration-300 hover:-translate-y-0.5 hover:border-navy-900/35 hover:shadow-soft"
+              className="group inline-flex flex-1 sm:flex-none items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap rounded-full border border-navy-900/15 bg-white px-4 py-3 text-[0.8rem] font-semibold text-navy-900 transition-all duration-300 hover:-translate-y-0.5 hover:border-navy-900/35 hover:shadow-soft sm:px-6 sm:py-3.5 sm:text-sm"
             >
-              Explore vaccines
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              <span className="whitespace-nowrap">Explore vaccines</span>
+              <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1 shrink-0" />
             </a>
-          </div>
-
-          {/* open status */}
-          <div className="reveal mt-7 inline-flex items-center gap-2.5 rounded-full border border-emerald-600/20 bg-emerald-50/80 px-4 py-2 text-[0.78rem] font-semibold text-emerald-800" data-reveal-delay="300">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-pulse-dot absolute inline-flex h-full w-full rounded-full bg-emerald-500" />
-              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
-            </span>
-            Open now — walk-ins welcome
           </div>
 
           {/* affiliations */}
