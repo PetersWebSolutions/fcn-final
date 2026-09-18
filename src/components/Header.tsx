@@ -69,10 +69,10 @@ export default function Header() {
 
   return (
     <header id="top" className="fixed inset-x-0 top-0 z-50">
-      {/* FCN Logo header — hides on scroll down, shows on scroll up */}
+      {/* FCN Logo header — hides on scroll down, shows on scroll up — collapses so moving bar moves to top */}
       <div
-        className={`transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform ${
-          headerVisible ? "translate-y-0" : "-translate-y-full"
+        className={`overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform ${
+          headerVisible ? "max-h-[120px] translate-y-0 opacity-100" : "max-h-0 -translate-y-full opacity-0"
         }`}
       >
         {/* Main nav */}
