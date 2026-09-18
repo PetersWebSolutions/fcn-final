@@ -24,18 +24,18 @@ export default function Header() {
       const current = window.scrollY;
       setScrolled(current > 12);
 
-      // When scrolling UP, Moving bar moves to top (logo hides)
-      // When scrolling DOWN, logo shows and pushes bar down
+      // Scroll down → FCN Logo moves UP to disappear, Moving bar moves UP but stays on top
+      // Scroll up → FCN Logo comes DOWN and pushes Moving bar DOWN
       if (current < 100) {
         setHeaderVisible(true);
       } else {
         const last = lastScrollYRef.current;
         if (current > last + 8) {
-          // scrolling DOWN → show FCN Logo, push moving bar down
-          setHeaderVisible(true);
-        } else if (current < last - 8) {
-          // scrolling UP → hide FCN Logo, moving bar moves to top stays visible
+          // scrolling DOWN → hide FCN Logo, moving bar moves to top
           setHeaderVisible(false);
+        } else if (current < last - 8) {
+          // scrolling UP → show FCN Logo, pushes moving bar down
+          setHeaderVisible(true);
         }
       }
       lastScrollYRef.current = current;
