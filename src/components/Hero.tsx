@@ -1,8 +1,6 @@
 import {
   Calendar,
   Compass,
-  Globe,
-  ShieldCheck,
   Pin,
   Check,
   SyringeShield,
@@ -61,18 +59,6 @@ export default function Hero() {
             >
               <span className="whitespace-nowrap">Explore vaccines</span>
               <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1 shrink-0" />
-            </a>
-          </div>
-
-          {/* affiliations */}
-          <div className="reveal mt-5 flex flex-wrap items-center gap-x-6 gap-y-2.5 text-[0.78rem] font-medium text-muted" data-reveal-delay="360">
-            <a href="#services" className="group inline-flex items-center gap-2 transition-colors hover:text-navy-900">
-              <Globe className="h-4 w-4 text-navy-700/60 transition-colors group-hover:text-gold-500" />
-              Intl Society of Travel Medicine
-            </a>
-            <a href="#yellow-fever" className="group inline-flex items-center gap-2 transition-colors hover:text-navy-900">
-              <ShieldCheck className="h-4 w-4 text-navy-700/60 transition-colors group-hover:text-gold-500" />
-              BOQ Yellow Fever assistance
             </a>
           </div>
         </div>
