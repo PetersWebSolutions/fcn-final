@@ -92,7 +92,7 @@ export default function Hero() {
                 className="absolute inset-0 h-full w-full object-cover"
               />
               {/* Circular display screen — gallery photos */}
-              <div className="absolute left-[68.7%] top-[53.25%] aspect-[100/105] w-[57%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full ring-4 ring-gold-500">
+              <div className="absolute left-[68.7%] top-[53.25%] aspect-[100/91] w-[65.6%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full ring-4 ring-gold-500">
                 {GALLERY_IMAGES.map((img, i) => (
                   <img
                     key={img.src}
