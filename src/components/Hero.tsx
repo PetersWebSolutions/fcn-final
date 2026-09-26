@@ -171,20 +171,21 @@ export default function Hero() {
             </span>
           </div>
 
-          {/* 4.8 ratings — no box, gold with 5 stars */}
-          <div className="animate-floaty absolute -left-3 top-[30%] flex flex-col items-start sm:-left-5">
-            <span className="flex gap-0.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="h-3.5 w-3.5 fill-gold-400 text-gold-400" />
-              ))}
+          {/* 4.8 ratings — boxed like the others */}
+          <div className="animate-floaty absolute -left-3 top-[30%] flex items-center gap-2.5 rounded-2xl border border-navy-900/8 bg-white/95 px-3.5 py-2.5 shadow-card backdrop-blur sm:-left-5">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-navy-900 text-gold-300">
+              <Star className="h-5 w-5" />
             </span>
-            <span className="mt-1 flex items-baseline gap-1.5">
-              <span className="font-display text-xl font-extrabold leading-none text-gold-300">
-                4.8
+            <span className="leading-tight">
+              <span className="flex items-center gap-1.5">
+                <span className="font-display text-base font-extrabold text-navy-900">4.9</span>
+                <span className="flex gap-px">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="h-3.5 w-3.5 fill-gold-400 text-gold-400" />
+                  ))}
+                </span>
               </span>
-              <span className="text-[0.6rem] font-bold uppercase tracking-[0.16em] text-white/70">
-                Ratings
-              </span>
+              <span className="block text-[0.62rem] font-medium text-muted">Google Rating</span>
             </span>
           </div>
 
