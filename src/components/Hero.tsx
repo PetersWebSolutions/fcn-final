@@ -101,9 +101,9 @@ export default function Hero() {
                 className="absolute inset-0 h-full w-full object-cover"
               />
               {/* Circular display screen — gallery photos */}
-              <div className="absolute left-[65%] top-[53.25%] aspect-[100/81] w-[75%] -translate-x-1/2 -translate-y-1/2">
+              <div className="absolute left-[58%] top-[50%] aspect-[100/81] w-[70%] -translate-x-1/2 -translate-y-1/2">
                 {/* Tilted egg mask — right side higher than left */}
-                <div className="absolute inset-0 -rotate-5 overflow-hidden rounded-[50%] ring-4 ring-gold-500">
+                <div className="absolute inset-0 -rotate-8 overflow-hidden rounded-[50%] ring-4 ring-gold-500">
                   <img
                     src={GALLERY_IMAGES[prev].src}
                     alt={GALLERY_IMAGES[prev].alt}
