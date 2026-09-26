@@ -8,6 +8,9 @@ import {
   ArrowRight,
   ChevronLeft,
   ChevronRight,
+  Star,
+  ShieldCheck,
+  Sparkle,
 } from "./Icons";
 
 const GALLERY_IMAGES = [
@@ -139,6 +142,21 @@ export default function Hero() {
             </div>
           </div>
 
+          {/* 13 years badge — above vaccines badge */}
+          <div className="animate-floaty-slow absolute -left-3 -top-10 flex items-center gap-2.5 rounded-2xl border border-navy-900/8 bg-white/95 px-3.5 py-2.5 shadow-card backdrop-blur sm:-left-5">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-navy-900 text-gold-300">
+              <Sparkle className="h-5 w-5" />
+            </span>
+            <span className="leading-tight">
+              <span className="block font-display text-base font-extrabold text-navy-900">
+                13 Years
+              </span>
+              <span className="block text-[0.62rem] font-medium text-muted">
+                of Trusted Service
+              </span>
+            </span>
+          </div>
+
           {/* vaccine count badge */}
           <div className="animate-floaty absolute -left-3 top-5 flex items-center gap-2.5 rounded-2xl border border-navy-900/8 bg-white/95 px-3.5 py-2.5 shadow-card backdrop-blur sm:-left-6">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-navy-900 text-gold-300">
@@ -150,6 +168,35 @@ export default function Hero() {
               </span>
               <span className="block text-[0.68rem] font-medium text-muted">
                 travel + routine
+              </span>
+            </span>
+          </div>
+
+          {/* 4.8 ratings — no box, gold with 5 stars */}
+          <div className="animate-floaty absolute -right-3 top-4 flex flex-col items-end sm:-right-5">
+            <span className="flex gap-0.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="h-3.5 w-3.5 fill-gold-400 text-gold-400" />
+              ))}
+            </span>
+            <span className="mt-1 flex items-baseline gap-1.5">
+              <span className="font-display text-xl font-extrabold leading-none text-gold-300">
+                4.8
+              </span>
+              <span className="text-[0.6rem] font-bold uppercase tracking-[0.16em] text-white/70">
+                Ratings
+              </span>
+            </span>
+          </div>
+
+          {/* ISTM Member — boxed */}
+          <div className="animate-floaty-slow absolute -left-3 top-1/3 flex items-center gap-2.5 rounded-2xl border border-navy-900/8 bg-white/95 px-3.5 py-2.5 shadow-card backdrop-blur sm:-left-5">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-navy-900 text-gold-300">
+              <ShieldCheck className="h-5 w-5" />
+            </span>
+            <span className="leading-tight">
+              <span className="block font-display text-sm font-extrabold text-navy-900">
+                ISTM Member
               </span>
             </span>
           </div>
