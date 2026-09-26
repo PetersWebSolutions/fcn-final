@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import {
   Calendar,
   Compass,
-  Pin,
   Check,
   SyringeShield,
   ArrowRight,
@@ -173,7 +172,7 @@ export default function Hero() {
           </div>
 
           {/* 4.8 ratings — no box, gold with 5 stars */}
-          <div className="animate-floaty absolute -right-3 top-4 flex flex-col items-end sm:-right-5">
+          <div className="animate-floaty absolute -left-3 top-[52%] flex flex-col items-start lg:top-[38%] sm:-left-5">
             <span className="flex gap-0.5">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="h-3.5 w-3.5 fill-gold-400 text-gold-400" />
@@ -190,7 +189,7 @@ export default function Hero() {
           </div>
 
           {/* ISTM Member — boxed */}
-          <div className="animate-floaty-slow absolute -left-3 top-1/3 flex items-center gap-2.5 rounded-2xl border border-navy-900/8 bg-white/95 px-3.5 py-2.5 shadow-card backdrop-blur sm:-left-5">
+          <div className="animate-floaty-slow absolute -right-3 top-5 flex items-center gap-2.5 rounded-2xl border border-navy-900/8 bg-white/95 px-3.5 py-2.5 shadow-card backdrop-blur sm:-right-5">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-navy-900 text-gold-300">
               <ShieldCheck className="h-5 w-5" />
             </span>
@@ -201,29 +200,14 @@ export default function Hero() {
             </span>
           </div>
 
-          {/* Room 601 card */}
-          <div className="absolute bottom-4 left-4 flex items-center justify-between gap-3 rounded-2xl bg-white/95 p-3.5 shadow-card backdrop-blur sm:bottom-5 sm:left-5">
-            <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-navy-900 text-gold-300">
-                <Pin className="h-5 w-5" />
-              </span>
-              <span className="leading-tight">
-                <span className="block text-[0.6rem] font-bold uppercase tracking-[0.22em] text-gold-600">
-                  This way
-                </span>
-                <span className="block font-display text-lg font-extrabold text-navy-900">
-                  Room 601
-                </span>
-              </span>
-            </div>
-            <a
-              href="#visit"
-              className="group shrink-0 rounded-full bg-navy-900 px-4 py-2.5 text-[0.75rem] font-semibold text-white transition-colors hover:bg-navy-800"
-            >
-              Find us
-              <ArrowRight className="ml-1 inline h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </a>
-          </div>
+          {/* Find us */}
+          <a
+            href="#visit"
+            className="group absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-navy-900 px-5 py-3 text-[0.8rem] font-semibold text-white shadow-card transition-colors hover:bg-navy-800 sm:bottom-5 sm:left-5"
+          >
+            Find us
+            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+          </a>
 
           {/* walk-in tag */}
           <div className="animate-floaty-slow absolute -right-2 -bottom-5 flex items-center gap-1.5 rounded-full border border-navy-900/8 bg-gold-500 px-3.5 py-2 text-[0.72rem] font-bold text-navy-950 shadow-card sm:-right-5">
