@@ -1,191 +1,756 @@
-import { useEffect, useRef } from "react";
-import { Quote, Star, ChevronLeft, ChevronRight } from "./Icons";
+import { useEffect, useState, useRef } from "react";
+import { Star, Check, Quote, ChevronLeft, ChevronRight, Plus, Close } from "./Icons";
+import { supabase, isSupabaseConfigured, type ReviewRow } from "../lib/supabase";
 
 type Story = {
-  initials: string;
   name: string;
-  meta: string;
+  fullName: string;
+  initials: string;
   quote: string;
+  stars: number;
+  profilePhoto: string;
+  reviewPhoto?: string;
+  reviewPhotos?: string[];
+  verified: boolean;
   tone: "navy" | "gold";
+  isSupabase?: boolean;
 };
 
 const STORIES: Story[] = [
   {
-    initials: "MC",
-    name: "Capt. Miguel R.",
-    meta: "Seafarer · South America",
-    quote:
-      "Processed my pre-departure vaccines and certificates in one visit. They even helped me schedule my BOQ Yellow Fever slot. Sailed on time.",
+    name: "Kevin H.",
+    fullName: "Kevin Holden",
+    initials: "KH",
+    quote: "Fast service, staffs are accomodating. Got my polio vaxx here at a reasonable price (PHP 1200). Located at 6th floor, elevator available. Best to go during morning",
+    stars: 5,
+    profilePhoto: "/images/reviewers/kevin-holden.jpg",
+    reviewPhoto: "/images/review-photos/reception1.jpg",
+    verified: true,
     tone: "navy",
   },
   {
+    name: "Vic R.",
+    fullName: "Vic Rolfe",
+    initials: "VR",
+    quote: "Excellent and friendly service. I went there without an appointment - and got my Polio vaccine, (with a proper vaccine certificate), within minutes.",
+    stars: 5,
+    profilePhoto: "/images/reviewers/vic-rolfe.jpg",
+    verified: true,
+    tone: "gold",
+  },
+  {
+    name: "Jerome A.",
+    fullName: "Jerome Adorable",
     initials: "JA",
-    name: "Jessa A.",
-    meta: "First-time traveler to Thailand",
-    quote:
-      "The pre-travel consult was so thorough — destination risks, food safety, even packing checklist. Felt genuinely cared for.",
-    tone: "gold",
-  },
-  {
-    initials: "DK",
-    name: "Daniel K.",
-    meta: "Frequent flyer",
-    quote:
-      "In and out for my flu and Tdap boosters in 30 minutes. Bright, calm clinic and zero waiting around. Booking ahead works.",
+    quote: "fast transaction. clean and hygienic",
+    stars: 5,
+    profilePhoto: "/images/reviewers/jerome-adorable.jpg",
+    reviewPhotos: [
+      "/images/review-photos/reception2.jpg",
+      "/images/review-photos/reception3.jpg",
+      "/images/review-photos/reception4.jpg",
+    ],
+    verified: true,
     tone: "navy",
   },
   {
-    initials: "RP",
-    name: "Rosa P.",
-    meta: "Nurse · Hajj pilgrim group",
-    quote:
-      "Meningococcal certificates for our whole group were organized without a hitch. The team understood every visa requirement.",
+    name: "Richard B.",
+    fullName: "Richard Bujda",
+    initials: "RB",
+    quote: "Great stuff , very professional. Whole process took 15 min after I walked in without an appointment scheduled. 10/10",
+    stars: 5,
+    profilePhoto: "/images/reviewers/richard-bujda.jpg",
+    verified: true,
     tone: "gold",
   },
   {
-    initials: "TS",
-    name: "Tom S.",
-    meta: "Backpacker · Southeast Asia",
-    quote:
-      "Rabies and Japanese encephalitis planned around my departure date. Clear pricing, zero pressure, and the room is easy to find.",
+    name: "S L.",
+    fullName: "S L",
+    initials: "SL",
+    quote: "Good place for flu shot",
+    stars: 5,
+    profilePhoto: "/images/reviewers/s-l.jpg",
+    verified: true,
+    tone: "navy",
+  },
+  {
+    name: "John E.",
+    fullName: "John Estrella",
+    initials: "JE",
+    quote: "We called first in the morning simply to inquire, but they invited us to drop-in that same afternoon. The doctor took his time to review my wife's vaccination needs. Shortly thereafter, another doctor administered the vaccines. It was a pleasant, efficient, and professional experience overall.",
+    stars: 5,
+    profilePhoto: "/images/reviewers/john-estrella.jpg",
+    verified: true,
+    tone: "gold",
+  },
+  {
+    name: "WeNeedJesus",
+    fullName: "WeNeedJesus",
+    initials: "WJ",
+    quote: "Service was great and easy. They were helpful till the end. Thank you God bless",
+    stars: 5,
+    profilePhoto: "/images/reviewers/weneedjesus.jpg",
+    verified: true,
+    tone: "navy",
+  },
+  {
+    name: "Lydia T.",
+    fullName: "Lydia Tarcowan",
+    initials: "LT",
+    quote: "Very accomdating staff and nurses. Clean clinic.. thank you...",
+    stars: 5,
+    profilePhoto: "/images/reviewers/lydia-tarcowan.jpg",
+    verified: true,
+    tone: "gold",
+  },
+  {
+    name: "Keth J.",
+    fullName: "Keth Jolly Vier Omongos",
+    initials: "KO",
+    quote: "Very quick and fast. They will assist and cater to all your vaccine needs.",
+    stars: 5,
+    profilePhoto: "/images/reviewers/keth-jolly.jpg",
+    verified: true,
+    tone: "navy",
+  },
+  {
+    name: "Ben T.",
+    fullName: "Ben Turner",
+    initials: "BT",
+    quote: "Super helpful, quick and painless inoculations! Great service & staff. Highly recommended!",
+    stars: 5,
+    profilePhoto: "/images/reviewers/ben-turner.jpg",
+    verified: true,
+    tone: "gold",
+  },
+  {
+    name: "Charlene M.",
+    fullName: "Charlene McGhee",
+    initials: "CM",
+    quote: "Dr. Nastor and his team are very kind and accommodating. Clear and informative about the vaccine I was getting. Thank you for your care!",
+    stars: 5,
+    profilePhoto: "/images/reviewers/charlene-mcghee.jpg",
+    verified: true,
+    tone: "navy",
+  },
+  {
+    name: "Lester D.",
+    fullName: "Lester Diaz",
+    initials: "LD",
+    quote: "Amazing staff. Got my varicella vaccine here",
+    stars: 5,
+    profilePhoto: "/images/reviewers/lester-diaz.jpg",
+    verified: true,
+    tone: "gold",
+  },
+  {
+    name: "Joel B.",
+    fullName: "Joel Banaglorioso",
+    initials: "JB",
+    quote: "Well entertained",
+    stars: 5,
+    profilePhoto: "/images/reviewers/joel-banaglorioso.jpg",
+    verified: true,
+    tone: "navy",
+  },
+  {
+    name: "Kevine G.",
+    fullName: "Kevine steeve Gandjeto",
+    initials: "KG",
+    quote: "The employees are really welcoming",
+    stars: 5,
+    profilePhoto: "/images/reviewers/kevine-gandjeto.jpg",
+    verified: true,
+    tone: "gold",
+  },
+  {
+    name: "Sandy B.",
+    fullName: "sandy booc",
+    initials: "SB",
+    quote: "Very friendly, staff and informative about the vaccine itself, customer service oriented",
+    stars: 5,
+    profilePhoto: "/images/reviewers/sandy-booc.jpg",
+    verified: true,
+    tone: "navy",
+  },
+  {
+    name: "Kannan S.",
+    fullName: "Kannan Sreedharan",
+    initials: "KS",
+    quote: "Best service I got in the Philippines in any business.",
+    stars: 5,
+    profilePhoto: "/images/reviewers/kannan-sreedharan.jpg",
+    verified: true,
+    tone: "gold",
+  },
+  {
+    name: "Chuck L.",
+    fullName: "Chuck Latter",
+    initials: "CL",
+    quote: "Excellent service . Only place I will go for shots and information .",
+    stars: 5,
+    profilePhoto: "/images/reviewers/chuck-latter.jpg",
+    verified: true,
+    tone: "navy",
+  },
+  {
+    name: "Clayton P.",
+    fullName: "Clayton Parayno",
+    initials: "CP",
+    quote: "Very accommodating Doctor and staff!! Highly recommendable.",
+    stars: 5,
+    profilePhoto: "/images/reviewers/clayton-parayno.jpg",
+    verified: true,
+    tone: "gold",
+  },
+  {
+    name: "Von Kevin E.",
+    fullName: "Von Kevin Evangelista",
+    initials: "VE",
+    quote: "It's fast and good, I think they're 400 above the price on BOQ, but there's no appointment, there's not much of a line, the service is good.",
+    stars: 5,
+    profilePhoto: "/images/reviewers/von-kevin-evangelista.jpg",
+    reviewPhotos: ["/images/review-photos/reception5.jpg", "/images/review-photos/reception6.jpg"],
+    verified: true,
     tone: "navy",
   },
 ];
 
-function Card({ story }: { story: Story }) {
+const NO_SEE_MORE_NAMES = ["Vic R.", "Richard B.", "Charlene M.", "Von Kevin E."];
+
+function Card({ story, index }: { story: Story; index: number }) {
+  const [lightbox, setLightbox] = useState<string | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const photos = story.reviewPhotos || (story.reviewPhoto ? [story.reviewPhoto] : []);
+  const hasPhotos = photos.length > 0;
+  const isExcludedFromSeeMore = NO_SEE_MORE_NAMES.includes(story.name);
+  const isLong = !isExcludedFromSeeMore && (story.quote.length > 120 || story.quote.split(" ").length > 18);
+
+  useEffect(() => {
+    if (!lightbox) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightbox(null);
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [lightbox]);
+
+  const showClamp = !isExcludedFromSeeMore && !isExpanded;
+
   return (
-    <article className="group flex h-full flex-col rounded-2xl border border-navy-900/10 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-card">
-      <Quote className="h-7 w-7 text-gold-500/80" />
-      <div className="mt-3 flex gap-0.5 text-gold-500" aria-label="5 out of 5 stars">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Star key={i} className="h-3.5 w-3.5" />
+    <>
+      <article
+        className={`group relative flex w-full flex-col overflow-hidden rounded-[1.5rem] border bg-white shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-card ${hasPhotos ? "border-gold-500/30 ring-1 ring-gold-500/10" : "border-navy-900/10"} ${isExcludedFromSeeMore || isExpanded ? "min-h-[300px] h-auto sm:min-h-[320px] lg:min-h-[340px]" : "h-[300px] sm:h-[320px] lg:h-[340px]"} ${story.isSupabase ? "ring-2 ring-emerald-500/20 border-emerald-500/30" : ""}`}
+        data-reveal-delay={`${index * 60}`}
+      >
+        <div className={`h-1 w-full shrink-0 ${hasPhotos ? "bg-gradient-to-r from-gold-500 via-gold-400 to-navy-900" : "bg-gradient-to-r from-navy-900 via-navy-800 to-gold-500"}`} />
+
+        {hasPhotos && (
+          <div className="absolute right-3 top-3 z-10 rounded-full bg-gold-500 px-2.5 py-1 text-[0.6rem] font-extrabold uppercase tracking-wide text-navy-900 shadow-sm">
+            📸 Clinic photos
+          </div>
+        )}
+        {story.isSupabase && (
+          <div className="absolute right-3 top-3 z-10 rounded-full bg-emerald-500 px-2.5 py-1 text-[0.6rem] font-extrabold uppercase tracking-wide text-white shadow-sm">
+            NEW • Approved
+          </div>
+        )}
+
+        <div className="flex h-full flex-col p-4 sm:p-5">
+          <div className="flex shrink-0 items-center gap-3">
+            {story.isSupabase ? (
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-navy-900 text-gold-300 ring-1 ring-navy-900/10 sm:h-11 sm:w-11 font-bold text-[0.9rem]">
+                {story.initials}
+              </div>
+            ) : (
+              <img
+                src={story.profilePhoto}
+                alt={story.fullName}
+                className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-navy-900/10 sm:h-11 sm:w-11"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = "none";
+                }}
+              />
+            )}
+            <div className="min-w-0 flex-1">
+              <p className="flex flex-wrap items-center gap-2 font-display text-[0.85rem] font-bold leading-tight text-navy-900 sm:text-[0.9rem]">
+                <span className="truncate">{story.name}</span>
+                {story.verified && (
+                  <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-600 px-2 py-0.5 text-[0.55rem] font-extrabold uppercase tracking-[0.12em] text-white shadow-sm">
+                    <Check className="h-3 w-3 stroke-[2.5]" />
+                    VERIFIED
+                  </span>
+                )}
+              </p>
+              <div className="mt-1 flex items-center gap-1">
+                <div className="flex gap-0.5 text-gold-500">
+                  {Array.from({ length: story.stars }).map((_, i) => (
+                    <Star key={i} className="h-3 w-3 fill-gold-500" />
+                  ))}
+                </div>
+                <span className="text-[0.65rem] font-bold text-navy-900/50">{story.stars}.0</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-3 flex flex-1 flex-col overflow-hidden">
+            <blockquote
+              className={`text-[0.82rem] leading-relaxed text-ink-soft sm:text-[0.84rem] ${showClamp ? "line-clamp-5" : ""}`}
+              style={showClamp ? { display: "-webkit-box", WebkitLineClamp: 5, WebkitBoxOrient: "vertical", overflow: "hidden" } : {}}
+            >
+              “{story.quote}”
+            </blockquote>
+
+            {isLong && (
+              <button
+                type="button"
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="mt-2 self-start text-[0.75rem] font-semibold text-navy-900 underline decoration-gold-500/50 underline-offset-4 transition-colors hover:text-gold-600 hover:decoration-gold-500"
+              >
+                {isExpanded ? "Show less" : "See full review"}
+              </button>
+            )}
+          </div>
+
+          {photos.length > 0 && (
+            <div className="mt-2.5 shrink-0">
+              <div className="flex flex-wrap gap-2">
+                {photos.map((photo, i) => (
+                  <button
+                    key={photo + i}
+                    type="button"
+                    onClick={() => setLightbox(photo)}
+                    className="group/photo relative overflow-hidden rounded-xl border border-navy-900/10 bg-paper transition-all hover:border-navy-900/20 hover:shadow-soft"
+                    title="Click to pop up — stays on site"
+                  >
+                    <img
+                      src={photo}
+                      alt={`Review photo ${i + 1} by ${story.name}`}
+                      className="h-10 w-10 object-cover transition-transform duration-300 group-hover/photo:scale-105 sm:h-11 sm:w-11"
+                    />
+                    <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-navy-900/0 opacity-0 transition-all group-hover/photo:bg-navy-900/30 group-hover/photo:opacity-100">
+                      <span className="rounded-full bg-white/90 px-2 py-1 text-[0.6rem] font-bold text-navy-900 shadow-soft">View</span>
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="mt-2.5 flex shrink-0 items-center gap-1.5 border-t border-dashed border-navy-900/10 pt-2.5 text-[0.6rem] text-muted">
+            <Quote className="h-3 w-3 shrink-0 text-gold-500/60" />
+            <span className="truncate">{story.isSupabase ? "New review • Approved" : `Real Google review${hasPhotos ? ` • ${photos.length} photo${photos.length > 1 ? "s" : ""}` : ""}`}</span>
+          </div>
+        </div>
+      </article>
+
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-navy-950/85 p-4 backdrop-blur-sm"
+          onClick={() => setLightbox(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="relative max-h-[90vh] max-w-3xl overflow-hidden rounded-[1.5rem] bg-white shadow-pop" onClick={(e) => e.stopPropagation()}>
+            <img src={lightbox} alt={`Enlarged by ${story.name}`} className="max-h-[80vh] w-auto max-w-[90vw] object-contain sm:max-w-3xl" />
+            <div className="flex items-center justify-between bg-white px-4 py-3">
+              <p className="text-[0.72rem] font-medium text-muted">Photo by {story.name} — click outside to close</p>
+              <button type="button" onClick={() => setLightbox(null)} className="rounded-full bg-navy-900 px-4 py-1.5 text-[0.75rem] font-semibold text-white hover:bg-navy-800">
+                Close
+              </button>
+            </div>
+            <button
+              type="button"
+              onClick={() => setLightbox(null)}
+              className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-navy-900/80 text-white backdrop-blur hover:bg-navy-900"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+function CarouselRow({
+  stories,
+}: {
+  stories: Story[];
+  title: string;
+  subtitle: string;
+  countLabel: string;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(true);
+
+  const updateScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanLeft(el.scrollLeft > 12);
+    setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 12);
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    updateScroll();
+    el.addEventListener("scroll", updateScroll, { passive: true });
+    window.addEventListener("resize", updateScroll);
+    return () => {
+      el.removeEventListener("scroll", updateScroll);
+      window.removeEventListener("resize", updateScroll);
+    };
+  }, [stories]);
+
+  const scroll = (dir: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const isMobile = window.innerWidth < 640;
+    const amount = el.clientWidth * (isMobile ? 0.48 : 0.33);
+    el.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" });
+  };
+
+  return (
+    <div className="reveal relative">
+      <div
+        ref={scrollRef}
+        className="flex items-start gap-4 overflow-x-auto scroll-smooth pb-3 pt-1 snap-x snap-mandatory [scrollbar-width:none] sm:gap-5 [&::-webkit-scrollbar]:hidden"
+      >
+        {stories.map((story, i) => (
+          <div
+            key={story.name + i + (story.isSupabase ? story.fullName : "")}
+            className="flex h-auto min-h-[300px] w-[46%] min-w-[46%] max-w-[46%] flex-shrink-0 snap-start flex-col sm:min-h-[320px] sm:w-[44%] sm:min-w-[44%] sm:max-w-[44%] md:w-[32%] md:min-w-[32%] md:max-w-[32%] lg:min-h-[340px] lg:w-[31.5%] lg:min-w-[31.5%] lg:max-w-[31.5%] xl:w-[30.5%] xl:min-w-[30.5%] xl:max-w-[30.5%]"
+          >
+            <div className="h-auto w-full">
+              <Card story={story} index={i} />
+            </div>
+          </div>
         ))}
       </div>
-      <blockquote className="mt-3 flex-1 text-[0.85rem] italic leading-relaxed text-ink-soft">
-        “{story.quote}”
-      </blockquote>
-      <figcaption className="mt-5 flex items-center gap-3 border-t border-navy-900/8 pt-4">
-        <span
-          className={`flex h-10 w-10 items-center justify-center rounded-full font-display text-[0.72rem] font-extrabold ${
-            story.tone === "navy"
-              ? "bg-navy-900 text-gold-300"
-              : "bg-gold-500 text-navy-950"
-          }`}
+
+      <div className="mt-1 flex justify-end gap-2 sm:justify-center">
+        <button
+          type="button"
+          onClick={() => scroll("left")}
+          disabled={!canLeft}
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-navy-900/15 bg-white text-navy-900 shadow-soft transition-all hover:border-navy-900/30 hover:bg-paper disabled:opacity-40 disabled:pointer-events-none"
+          aria-label="Previous"
         >
-          {story.initials}
-        </span>
-        <span>
-          <span className="block font-display text-sm font-bold text-navy-900">
-            {story.name}
-          </span>
-          <span className="block text-[0.72rem] text-muted">{story.meta}</span>
-        </span>
-      </figcaption>
-    </article>
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+        <button
+          type="button"
+          onClick={() => scroll("right")}
+          disabled={!canRight}
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-navy-900 text-white shadow-soft transition-all hover:bg-navy-800 disabled:opacity-40 disabled:pointer-events-none"
+          aria-label="Next"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </button>
+      </div>
+
+      <div className="pointer-events-none absolute bottom-14 left-0 top-1 w-6 bg-gradient-to-r from-[#faf8f3] to-transparent sm:w-8 lg:hidden" />
+      <div className="pointer-events-none absolute bottom-14 right-0 top-1 w-6 bg-gradient-to-l from-[#faf8f3] to-transparent sm:w-8 lg:hidden" />
+    </div>
+  );
+}
+
+function AddReviewModal({
+  isOpen,
+  onClose,
+  onSuccess,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
+}) {
+  const [name, setName] = useState("");
+  const [stars, setStars] = useState(5);
+  const [reviewText, setReviewText] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    if (!name.trim() || !reviewText.trim()) {
+      setError("Please fill in your name and review.");
+      return;
+    }
+    if (reviewText.trim().length < 10) {
+      setError("Review should be at least 10 characters.");
+      return;
+    }
+    setSubmitting(true);
+
+    try {
+      // Save to Supabase if configured, else fallback to local
+      if (isSupabaseConfigured && supabase) {
+        const { error: insertError } = await supabase.from("reviews").insert([
+          {
+            name: name.trim(),
+            stars,
+            review_text: reviewText.trim(),
+            status: "pending",
+          },
+        ]);
+        if (insertError) throw insertError;
+
+        // Notify via Vercel API (sends email to CLINIC_EMAIL)
+        try {
+          await fetch("/api/notify-review", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: name.trim(), stars, review_text: reviewText.trim() }),
+          });
+        } catch {
+          // ignore email error — review still saved
+        }
+      } else {
+        // Fallback: save to localStorage for demo
+        const pending = JSON.parse(localStorage.getItem("fcn_pending_reviews") || "[]");
+        pending.push({ name: name.trim(), stars, review_text: reviewText.trim(), created_at: new Date().toISOString() });
+        localStorage.setItem("fcn_pending_reviews", JSON.stringify(pending));
+        // Also try to email via mailto fallback (opens email client)
+        console.log(`[REVIEW PENDING - NO SUPABASE] ${name} (${stars}★): ${reviewText}`);
+      }
+
+      setName("");
+      setStars(5);
+      setReviewText("");
+      onSuccess();
+      onClose();
+    } catch (err: any) {
+      setError(err.message || "Failed to submit review. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-navy-950/80 p-4 backdrop-blur-sm"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Add review popup"
+    >
+      <div
+        className="relative flex w-full max-w-lg flex-col overflow-hidden rounded-[1.5rem] border border-white/15 bg-white shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between border-b border-navy-900/10 bg-paper px-6 py-4">
+          <div>
+            <h3 className="font-display text-lg font-bold text-navy-900">Add Your Review</h3>
+          </div>
+          <button
+            onClick={onClose}
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-navy-900/10 bg-white text-navy-900/60 hover:bg-paper"
+          >
+            <Close className="h-4 w-4" />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4 px-6 py-5">
+          <div>
+            <label className="mb-1.5 block text-[0.78rem] font-bold text-navy-900">Your Name *</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. Juan Dela Cruz"
+              className="w-full rounded-xl border border-navy-900/12 bg-paper/60 px-4 py-3 text-sm text-navy-900 outline-none focus:border-gold-500 focus:bg-white focus:ring-4 focus:ring-gold-500/12"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-[0.78rem] font-bold text-navy-900">Rating *</label>
+            <div className="flex items-center gap-1.5">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => setStars(s)}
+                  className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${
+                    s <= stars ? "border-gold-500 bg-gold-500 text-navy-950 shadow-soft" : "border-navy-900/15 bg-white text-navy-900/30 hover:border-navy-900/30"
+                  }`}
+                  aria-label={`${s} stars`}
+                >
+                  <Star className={`h-5 w-5 ${s <= stars ? "fill-navy-950" : ""}`} />
+                </button>
+              ))}
+              <span className="ml-2 text-[0.85rem] font-bold text-navy-900">{stars}.0 / 5.0</span>
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-[0.78rem] font-bold text-navy-900">Your Review *</label>
+            <textarea
+              value={reviewText}
+              onChange={(e) => setReviewText(e.target.value)}
+              placeholder="Share your experience at FCN Medical — how was the service, staff, vaccine process..."
+              rows={4}
+              className="w-full resize-none rounded-xl border border-navy-900/12 bg-paper/60 px-4 py-3 text-sm text-navy-900 outline-none focus:border-gold-500 focus:bg-white focus:ring-4 focus:ring-gold-500/12"
+              required
+            />
+            <p className="mt-1.5 text-[0.68rem] text-muted">{reviewText.length} characters • min 10</p>
+          </div>
+
+          {error && <p className="rounded-xl bg-red-50 px-4 py-2.5 text-[0.8rem] font-medium text-red-700 border border-red-200">{error}</p>}
+
+          <div className="flex gap-3 pt-1">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 rounded-xl border border-navy-900/15 bg-white px-5 py-3 text-sm font-bold text-navy-900 hover:bg-paper"
+              disabled={submitting}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="flex-1 rounded-xl bg-navy-900 px-5 py-3 text-sm font-bold text-white shadow-soft hover:bg-navy-800 disabled:opacity-50"
+            >
+              {submitting ? "Submitting..." : "Submit Review"}
+            </button>
+          </div>
+
+          <p className="text-center text-[0.68rem] text-muted">Your review will be pending approval • Approved reviews auto-add to website carousel</p>
+        </form>
+      </div>
+    </div>
   );
 }
 
 export default function Testimonials() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const pausedRef = useRef(false);
+  const [supabaseReviews, setSupabaseReviews] = useState<Story[]>([]);
+  const [isAddReviewOpen, setIsAddReviewOpen] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  const scroll = (dir: 1 | -1) => {
-    const el = trackRef.current;
-    if (!el) return;
-    const card = el.querySelector("article");
-    const amount = card ? card.getBoundingClientRect().width + 20 : 320;
-
-    if (dir === 1 && el.scrollLeft + el.clientWidth >= el.scrollWidth - 24) {
-      el.scrollTo({ left: 0, behavior: "smooth" });
-      return;
-    }
-    if (dir === -1 && el.scrollLeft <= 4) {
-      el.scrollTo({ left: el.scrollWidth, behavior: "smooth" });
-      return;
-    }
-    el.scrollBy({ left: dir * amount, behavior: "smooth" });
-  };
-
+  // Fetch approved reviews from Supabase
   useEffect(() => {
-    const id = window.setInterval(() => {
-      if (!pausedRef.current) scroll(1);
-    }, 5500);
-    return () => window.clearInterval(id);
+    if (!isSupabaseConfigured || !supabase) return;
+    const fetchApproved = async () => {
+      const { data, error } = await supabase
+        .from("reviews")
+        .select("*")
+        .eq("status", "approved")
+        .order("created_at", { ascending: false })
+        .limit(20);
+      if (error) {
+        console.error("Supabase fetch error", error);
+        return;
+      }
+      if (data) {
+        const mapped: Story[] = (data as ReviewRow[]).map((r) => ({
+          name: r.name.length > 15 ? r.name.split(" ")[0] + " " + (r.name.split(" ")[1]?.[0] || "") + "." : r.name,
+          fullName: r.name,
+          initials: r.name
+            .split(" ")
+            .map((n) => n[0])
+            .join("")
+            .slice(0, 2)
+            .toUpperCase(),
+          quote: r.review_text,
+          stars: r.stars,
+          profilePhoto: "",
+          verified: true,
+          tone: "gold" as const,
+          isSupabase: true,
+        }));
+        setSupabaseReviews(mapped);
+      }
+    };
+    fetchApproved();
   }, []);
+
+  const allStories = [...supabaseReviews, ...STORIES];
+
+  const photoStories = allStories.filter((s) => (s.reviewPhotos && s.reviewPhotos.length > 0) || s.reviewPhoto);
+  const nonPhotoStories = allStories.filter((s) => !(s.reviewPhotos && s.reviewPhotos.length > 0) && !s.reviewPhoto);
+
+  const group1: Story[] = [photoStories[0], ...nonPhotoStories.slice(0, 6)].filter(Boolean) as Story[];
+  const group2: Story[] = [photoStories[1], ...nonPhotoStories.slice(6, 11)].filter(Boolean) as Story[];
+  const group3: Story[] = [photoStories[2], ...nonPhotoStories.slice(11, 16)].filter(Boolean) as Story[];
 
   return (
     <section className="relative overflow-hidden bg-paper-deep/50 py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-5 md:px-6 lg:px-10">
-        <div className="flex items-end justify-between gap-6">
-          <div>
-            <p className="reveal eyebrow flex items-center gap-3 text-gold-600">
-              <span className="h-px w-7 bg-gold-500/50" />
-              Patient stories
-            </p>
-            <h2 className="reveal mt-4 max-w-md font-display text-3xl font-extrabold leading-tight text-navy-900 sm:text-4xl lg:text-[2.65rem]" data-reveal-delay="80">
-              Travelers who flew protected
-            </h2>
-          </div>
-          <div className="hidden shrink-0 gap-2.5 sm:flex">
-            <button
-              type="button"
-              onClick={() => scroll(-1)}
-              aria-label="Previous stories"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-navy-900/15 bg-white text-navy-900 transition-all duration-300 hover:border-navy-900 hover:bg-navy-900 hover:text-gold-300"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button
-              type="button"
-              onClick={() => scroll(1)}
-              aria-label="Next stories"
-              className="flex h-11 w-11 items-center justify-center rounded-full bg-navy-900 text-gold-300 transition-all duration-300 hover:-translate-x-0 hover:bg-navy-800"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-          </div>
-        </div>
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="reveal eyebrow flex items-center justify-center gap-3 text-gold-600">
+            <span className="h-px w-7 bg-gold-500/50" />
+            Patient stories
+            <span className="h-px w-7 bg-gold-500/50" />
+          </p>
+          <h2 className="reveal mt-4 font-display text-3xl font-extrabold leading-tight text-navy-900 sm:text-4xl lg:text-[2.65rem]" data-reveal-delay="80">
+            Travelers who flew <span className="font-playfair text-[1.25em] font-bold italic leading-[0.9] text-gold-500">protected</span>
+          </h2>
+          <p className="reveal mt-3 text-[0.9rem] leading-relaxed text-ink-soft" data-reveal-delay="120">
+            {allStories.length} verified reviews — {supabaseReviews.length > 0 ? `${supabaseReviews.length} new approved + ` : ""}19 original • Add your review below
+          </p>
 
-        <div
-          ref={trackRef}
-          onMouseEnter={() => (pausedRef.current = true)}
-          onMouseLeave={() => (pausedRef.current = false)}
-          onTouchStart={() => (pausedRef.current = true)}
-          onTouchEnd={() =>
-            window.setTimeout(() => (pausedRef.current = false), 4000)
-          }
-          className="no-scrollbar -mx-5 mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-2 md:mx-0 md:px-0"
-        >
-          {STORIES.map((s, i) => (
-            <div
-              key={s.name}
-              className="reveal w-[85%] shrink-0 snap-start sm:w-[44%] lg:w-[calc((100%-2.5rem)/3)]"
-              data-reveal-delay={`${i * 90}`}
-            >
-              <Card story={s} />
+          {submitSuccess && (
+            <div className="reveal mx-auto mt-4 max-w-md rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-[0.82rem] font-medium text-emerald-800" data-reveal-delay="200">
+              ✅ Thank you! Your review is pending approval. Once approved it auto-adds to the carousel!
             </div>
-          ))}
+          )}
         </div>
 
-        <div className="mt-6 flex justify-center gap-2.5 sm:hidden">
-          <button
-            type="button"
-            onClick={() => scroll(-1)}
-            aria-label="Previous stories"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-navy-900/15 bg-white text-navy-900"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => scroll(1)}
-            aria-label="Next stories"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-navy-900 text-gold-300"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
+        <div className="mx-auto mt-8 flex max-w-6xl flex-col gap-6 lg:gap-8">
+          <CarouselRow stories={group1} title="7 reviews" subtitle="Starts with Kevin H. — 1 clinic photo at front" countLabel="" />
+          <CarouselRow stories={group2} title="6 more reviews" subtitle="Starts with Jerome A. — 3 clinic photos at front" countLabel="" />
+          <CarouselRow stories={group3} title="6 more reviews" subtitle="Starts with Von Kevin E. — 2 clinic photos at front" countLabel="" />
         </div>
+
+        {/* Add Review button moved below reviews */}
+        <div className="reveal mx-auto mt-10 flex flex-col items-center gap-3 text-center" data-reveal-delay="200">
+          <button
+            onClick={() => setIsAddReviewOpen(true)}
+            className="group inline-flex items-center gap-2 rounded-full bg-navy-900 px-7 py-3.5 text-[0.9rem] font-bold text-white shadow-soft transition-all hover:-translate-y-0.5 hover:bg-navy-800"
+          >
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gold-500 text-navy-950 transition-transform group-hover:rotate-90">
+              <Plus className="h-4 w-4" />
+            </span>
+            Add Review
+          </button>
+          <p className="text-[0.72rem] text-muted">Share your experience with us - your review will help us improve and it will be posted in our website. Thank you!</p>
+        </div>
+
       </div>
+
+      <AddReviewModal
+        isOpen={isAddReviewOpen}
+        onClose={() => setIsAddReviewOpen(false)}
+        onSuccess={() => {
+          setSubmitSuccess(true);
+          setTimeout(() => setSubmitSuccess(false), 6000);
+        }}
+      />
     </section>
   );
 }

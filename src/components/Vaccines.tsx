@@ -60,8 +60,9 @@ export default function Vaccines() {
   }, [query, filter]);
 
   return (
-    <section id="vaccines" className="relative overflow-hidden bg-paper-deep/60 py-20 lg:py-28">
-      <div className="pointer-events-none absolute inset-x-0 top-0 dotted-divider opacity-50" />
+    <section id="vaccines" className="relative overflow-hidden bg-[#EAF2FF] py-20 lg:py-28">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#EFF6FF]/80 via-[#EAF2FF] to-[#E0EBFF]/90" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 dotted-divider opacity-30" />
       <div className="mx-auto max-w-7xl px-5 md:px-6 lg:px-10">
         <div className="mx-auto max-w-2xl text-center">
           <p className="reveal eyebrow flex items-center justify-center gap-3 text-gold-600">
@@ -70,7 +71,7 @@ export default function Vaccines() {
             <span className="h-px w-7 bg-gold-500/50" />
           </p>
           <h2 className="reveal mt-4 font-display text-3xl font-extrabold leading-tight text-navy-900 sm:text-4xl lg:text-[2.65rem]" data-reveal-delay="80">
-            Protection for every itinerary
+            Protection for every <span className="font-playfair text-[1.25em] font-bold italic leading-[0.9] text-gold-500">itinerary</span>
           </h2>
           <p className="reveal mt-4 text-[0.92rem] leading-relaxed text-ink-soft" data-reveal-delay="160">
             6 travel vaccines · 11 routine &amp; adult vaccines — administered

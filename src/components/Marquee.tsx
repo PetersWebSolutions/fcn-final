@@ -29,7 +29,7 @@ function Track() {
 export default function Marquee() {
   return (
     <div
-      className="overflow-hidden border-y border-navy-900/8 bg-paper-deep pb-6 pt-24 lg:pt-28"
+      className="overflow-hidden border-y border-navy-900/8 bg-paper-deep py-4 sm:py-5"
       aria-hidden="true"
     >
       <div className="animate-marquee flex w-max">

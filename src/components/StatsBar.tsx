@@ -2,7 +2,7 @@ import CountUp from "./CountUp";
 
 const STATS = [
   { to: 5, suffix: "", label: "Core travel-health services" },
-  { to: 18, suffix: "+", label: "Vaccines available in-clinic" },
+  { to: 17, suffix: "+", label: "Vaccines available in-clinic" },
   { to: 6, suffix: " days", label: "Open every week, Mon–Sat" },
   { to: 601, suffix: "", label: "Find us in Room 601" },
 ];

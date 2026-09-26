@@ -17,7 +17,7 @@ export default function Location() {
             <span className="h-px w-7 bg-gold-500/50" />
           </p>
           <h2 className="reveal mt-4 font-display text-3xl font-extrabold leading-tight text-navy-900 sm:text-4xl lg:text-[2.65rem]" data-reveal-delay="80">
-            Finding us is the easiest part
+            Finding us is the <span className="font-playfair text-[1.25em] font-bold italic leading-[0.9] text-gold-500">easiest part</span>
           </h2>
         </div>
 

@@ -41,6 +41,8 @@ function FieldIcon({ children }: { children: React.ReactNode }) {
 
 export default function Booking() {
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -60,25 +62,42 @@ export default function Booking() {
     ) =>
       setForm((f) => ({ ...f, [key]: e.target.value }));
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSending(true);
+    setError("");
+    try {
+      const res = await fetch("/api/notify-booking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error("request failed");
+      setSubmitted(true);
+    } catch {
+      setError(
+        "Something went wrong sending your request. Please try again, or call us at Tel. 87429179."
+      );
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
     <section id="book" className="relative overflow-hidden bg-paper-deep/60 py-20 lg:py-28">
       <div className="pointer-events-none absolute -right-32 top-24 h-96 w-96 rounded-full bg-gold-100/50 blur-3xl" />
       <div className="relative mx-auto grid max-w-7xl items-start gap-12 px-5 md:px-6 lg:grid-cols-[1fr_1.1fr] lg:gap-14 lg:px-10">
-        {/* Left */}
-        <div>
-          <p className="reveal eyebrow flex items-center gap-3 text-gold-600">
+        {/* Left — now centered */}
+        <div className="text-center">
+          <p className="reveal eyebrow flex items-center justify-center gap-3 text-gold-600 text-center">
             <span className="h-px w-7 bg-gold-500/50" />
             Book a visit
+            <span className="h-px w-7 bg-gold-500/50" />
           </p>
-          <h2 className="reveal mt-4 font-display text-3xl font-extrabold leading-tight text-navy-900 sm:text-4xl lg:text-[2.75rem]" data-reveal-delay="80">
-            Reserve your slot in under a minute
+          <h2 className="reveal mx-auto mt-4 max-w-xl text-center font-display text-3xl font-extrabold leading-tight text-navy-900 sm:text-4xl lg:text-[2.75rem]" data-reveal-delay="80">
+            Reserve your slot in <span className="font-playfair text-[1.25em] font-bold italic leading-[0.9] text-gold-500">under a minute</span>
           </h2>
-          <p className="reveal mt-4 max-w-md text-[0.92rem] leading-relaxed text-ink-soft" data-reveal-delay="160">
+          <p className="reveal mx-auto mt-4 max-w-md text-center text-[0.92rem] leading-relaxed text-ink-soft" data-reveal-delay="160">
             Tell us what you need and when — our team confirms your appointment
             and prepares your vaccines and paperwork before you arrive at Room
             601.
@@ -276,11 +295,17 @@ export default function Booking() {
 
                 <button
                   type="submit"
-                  className="group flex w-full items-center justify-center gap-2.5 rounded-xl bg-navy-900 py-4 text-sm font-bold text-white shadow-pop transition-all duration-300 hover:-translate-y-0.5 hover:bg-navy-800"
+                  disabled={sending}
+                  className="group flex w-full items-center justify-center gap-2.5 rounded-xl bg-navy-900 py-4 text-sm font-bold text-white shadow-pop transition-all duration-300 hover:-translate-y-0.5 hover:bg-navy-800 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
                 >
                   <Send className="h-4.5 w-4.5 text-gold-300 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  Request appointment
+                  {sending ? "Sending…" : "Request appointment"}
                 </button>
+                {error && (
+                  <p className="rounded-lg bg-red-50 px-3 py-2 text-center text-[0.75rem] font-medium text-red-600">
+                    {error}
+                  </p>
+                )}
                 <p className="text-center text-[0.72rem] text-muted">
                   No payment needed today · Free confirmation by phone
                 </p>
