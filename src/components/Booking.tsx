@@ -34,6 +34,12 @@ function isLastSlotDay(date: string) {
   return !isNaN(d.getTime()) && d.getDay() >= 1 && d.getDay() <= 5;
 }
 
+function isSunday(date: string) {
+  if (!date) return false;
+  const d = new Date(date + "T00:00:00");
+  return !isNaN(d.getTime()) && d.getDay() === 0;
+}
+
 function timeGroupsForDate(date: string) {
   const groups = TIME_GROUPS.map((g) => ({ label: g.label, slots: [...g.slots] }));
   if (isLastSlotDay(date)) {
@@ -284,6 +290,11 @@ export default function Booking() {
                       className={inputBase}
                       aria-label="Preferred date"
                     />
+                    {isSunday(form.date) && (
+                      <p className="mt-1.5 text-[0.72rem] font-semibold text-red-600">
+                        We are Close on Sundays
+                      </p>
+                    )}
                   </div>
                   <div className="relative">
                     <FieldIcon>
