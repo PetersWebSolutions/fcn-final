@@ -137,6 +137,13 @@ h1, h2, h3, h4, h5 {
 .animate-floaty { animation: floaty 5s ease-in-out infinite; }
 .animate-floaty-slow { animation: floaty 7s ease-in-out 0.6s infinite; }
 
+/* Gallery wipe-in — new photo wipes in from the right side */
+@keyframes wipe-in {
+  from { clip-path: inset(0 0 0 100%); }
+  to { clip-path: inset(0 0 0 0); }
+}
+.animate-wipe-in { animation: wipe-in 0.7s ease-in-out; }
+
 /* Pulsing open dot */
 @keyframes pulse-ring {
   0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }

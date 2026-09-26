@@ -23,11 +23,18 @@ const GALLERY_IMAGES = [
 
 export default function Hero() {
   const [current, setCurrent] = useState(0);
+  const [prev, setPrev] = useState(0);
+
+  const goTo = (i: number) => {
+    if (i === current) return;
+    setPrev(current);
+    setCurrent(i);
+  };
 
   useEffect(() => {
-    const id = setInterval(() => setCurrent((c) => (c + 1) % GALLERY_IMAGES.length), 3000);
+    const id = setInterval(() => goTo((current + 1) % GALLERY_IMAGES.length), 3000);
     return () => clearInterval(id);
-  }, []);
+  }, [current]);
   return (
     <section className="relative overflow-hidden bg-paper pt-36 md:pt-44">
       {/* ambient background */}
@@ -97,21 +104,24 @@ export default function Hero() {
               <div className="absolute left-[65%] top-[53.25%] aspect-[100/81] w-[75%] -translate-x-1/2 -translate-y-1/2">
                 {/* Tilted egg mask — right side higher than left */}
                 <div className="absolute inset-0 -rotate-5 overflow-hidden rounded-[50%] ring-4 ring-gold-500">
-                  {GALLERY_IMAGES.map((img, i) => (
-                    <img
-                      key={img.src}
-                      src={img.src}
-                      alt={img.alt}
-                      className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${i === current ? "opacity-100" : "opacity-0"}`}
-                      loading={i === 0 ? "eager" : "lazy"}
-                    />
-                  ))}
+                  <img
+                    src={GALLERY_IMAGES[prev].src}
+                    alt={GALLERY_IMAGES[prev].alt}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                  <img
+                    key={current}
+                    src={GALLERY_IMAGES[current].src}
+                    alt={GALLERY_IMAGES[current].alt}
+                    className="animate-wipe-in absolute inset-0 h-full w-full object-cover"
+                    loading={current === 0 ? "eager" : "lazy"}
+                  />
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-950/50 via-transparent to-transparent" />
                 </div>
                 {/* Gallery controls */}
                 <button
                   type="button"
-                  onClick={() => setCurrent((c) => (c - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length)}
+                  onClick={() => goTo((current - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length)}
                   className="absolute left-2 top-1/2 z-10 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-navy-900 shadow-soft backdrop-blur transition-all hover:bg-white group-hover/frame:flex"
                   aria-label="Previous image"
                 >
@@ -119,7 +129,7 @@ export default function Hero() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setCurrent((c) => (c + 1) % GALLERY_IMAGES.length)}
+                  onClick={() => goTo((current + 1) % GALLERY_IMAGES.length)}
                   className="absolute right-2 top-1/2 z-10 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-navy-900 shadow-soft backdrop-blur transition-all hover:bg-white group-hover/frame:flex"
                   aria-label="Next image"
                 >
@@ -131,7 +141,7 @@ export default function Hero() {
                     <button
                       key={i}
                       type="button"
-                      onClick={() => setCurrent(i)}
+                      onClick={() => goTo(i)}
                       className={`h-1.5 rounded-full transition-all ${i === current ? "w-6 bg-white" : "w-1.5 bg-white/60 hover:bg-white/80"}`}
                       aria-label={`Go to image ${i + 1}`}
                     />
@@ -150,7 +160,7 @@ export default function Hero() {
               <span className="block font-display text-base font-extrabold text-navy-900">
                 13 Years
               </span>
-              <span className="block text-[0.62rem] font-medium text-muted">
+              <span className="block text-[0.72rem] font-semibold text-navy-700">
                 of Trusted Service
               </span>
             </span>
@@ -165,7 +175,7 @@ export default function Hero() {
               <span className="block font-display text-sm font-extrabold text-navy-900">
                 17 vaccines
               </span>
-              <span className="block text-[0.68rem] font-medium text-muted">
+              <span className="block text-[0.78rem] font-semibold text-navy-700">
                 travel + routine
               </span>
             </span>
@@ -185,7 +195,7 @@ export default function Hero() {
                   ))}
                 </span>
               </span>
-              <span className="block text-[0.62rem] font-medium text-muted">Google Rating</span>
+              <span className="block text-[0.72rem] font-semibold text-navy-700">Google Rating</span>
             </span>
           </div>
 
