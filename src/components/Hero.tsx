@@ -92,17 +92,20 @@ export default function Hero() {
                 className="absolute inset-0 h-full w-full object-cover"
               />
               {/* Circular display screen — gallery photos */}
-              <div className="absolute left-[68.7%] top-[53.25%] aspect-[100/81] w-[65.6%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full ring-4 ring-gold-500">
-                {GALLERY_IMAGES.map((img, i) => (
-                  <img
-                    key={img.src}
-                    src={img.src}
-                    alt={img.alt}
-                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${i === current ? "opacity-100" : "opacity-0"}`}
-                    loading={i === 0 ? "eager" : "lazy"}
-                  />
-                ))}
-                <div className="pointer-events-none absolute inset-0 rounded-full bg-gradient-to-t from-navy-950/50 via-transparent to-transparent" />
+              <div className="absolute left-[68.7%] top-[53.25%] aspect-[100/81] w-[65.6%] -translate-x-1/2 -translate-y-1/2">
+                {/* Tilted egg mask — right side higher than left */}
+                <div className="absolute inset-0 -rotate-5 overflow-hidden rounded-[50%] ring-4 ring-gold-500">
+                  {GALLERY_IMAGES.map((img, i) => (
+                    <img
+                      key={img.src}
+                      src={img.src}
+                      alt={img.alt}
+                      className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${i === current ? "opacity-100" : "opacity-0"}`}
+                      loading={i === 0 ? "eager" : "lazy"}
+                    />
+                  ))}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-950/50 via-transparent to-transparent" />
+                </div>
                 {/* Gallery controls */}
                 <button
                   type="button"
