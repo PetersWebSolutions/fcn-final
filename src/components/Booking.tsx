@@ -21,12 +21,26 @@ const SERVICES = [
   "Not sure yet — help me choose",
 ];
 
-const TIMES = [
-  "Morning (8:00 AM – 12:00 PM)",
-  "Midday (12:00 PM – 2:00 PM)",
-  "Afternoon (2:00 PM – 5:00 PM)",
-  "Saturday morning",
+const TIME_GROUPS = [
+  { label: "Morning", slots: ["8am-9am", "9am-10am", "10am-11am", "11am-12pm"] },
+  { label: "Afternoon", slots: ["1pm-2pm", "2pm-3pm", "3pm-4pm"] },
 ];
+// 4pm-5pm is only offered when the selected date is Mon-Fri
+const LAST_SLOT = "4pm-5pm";
+
+function isLastSlotDay(date: string) {
+  if (!date) return false;
+  const d = new Date(date + "T00:00:00");
+  return !isNaN(d.getTime()) && d.getDay() >= 1 && d.getDay() <= 5;
+}
+
+function timeGroupsForDate(date: string) {
+  const groups = TIME_GROUPS.map((g) => ({ label: g.label, slots: [...g.slots] }));
+  if (isLastSlotDay(date)) {
+    groups[1].slots.push(LAST_SLOT);
+  }
+  return groups;
+}
 
 const inputBase =
   "w-full rounded-xl border border-navy-900/12 bg-paper/60 px-4 py-3 pl-11 text-sm text-navy-900 outline-none transition-all placeholder:text-muted/70 focus:border-gold-500 focus:bg-white focus:ring-4 focus:ring-gold-500/12";
@@ -61,6 +75,18 @@ export default function Booking() {
       >
     ) =>
       setForm((f) => ({ ...f, [key]: e.target.value }));
+
+  const todayISO = new Date().toISOString().split("T")[0];
+  const timeGroups = timeGroupsForDate(form.date);
+
+  const onDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const date = e.target.value;
+    setForm((f) => ({
+      ...f,
+      date,
+      time: !isLastSlotDay(date) && f.time === LAST_SLOT ? "" : f.time,
+    }));
+  };
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -253,7 +279,8 @@ export default function Booking() {
                     <input
                       type="date"
                       value={form.date}
-                      onChange={update("date")}
+                      min={todayISO}
+                      onChange={onDateChange}
                       className={inputBase}
                       aria-label="Preferred date"
                     />
@@ -271,10 +298,14 @@ export default function Booking() {
                       <option value="" disabled>
                         Preferred time
                       </option>
-                      {TIMES.map((t) => (
-                        <option key={t} value={t} className="text-navy-900">
-                          {t}
-                        </option>
+                      {timeGroups.map((g) => (
+                        <optgroup key={g.label} label={g.label}>
+                          {g.slots.map((t) => (
+                            <option key={t} value={t} className="text-navy-900">
+                              {t}
+                            </option>
+                          ))}
+                        </optgroup>
                       ))}
                     </select>
                   </div>
