@@ -96,6 +96,10 @@ export default function Booking() {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (isSunday(form.date)) {
+      setError("Please select a valid day from Mon-Sat. We are Closed on Sundays.");
+      return;
+    }
     setSending(true);
     setError("");
     try {
