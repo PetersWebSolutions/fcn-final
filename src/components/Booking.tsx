@@ -296,7 +296,7 @@ export default function Booking() {
                     />
                     {isSunday(form.date) && (
                       <p className="mt-1.5 text-[0.72rem] font-semibold text-red-600">
-                        We are Close on Sundays
+                        We are Closed on Sundays
                       </p>
                     )}
                   </div>
