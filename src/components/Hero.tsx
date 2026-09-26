@@ -142,7 +142,7 @@ export default function Hero() {
           </div>
 
           {/* 13 years badge — above vaccines badge */}
-          <div className="animate-floaty-slow absolute -left-3 -top-10 flex items-center gap-2.5 rounded-2xl border border-navy-900/8 bg-white/95 px-3.5 py-2.5 shadow-card backdrop-blur sm:-left-5">
+          <div className="animate-floaty-slow absolute -left-3 top-[3%] flex items-center gap-2.5 rounded-2xl border border-navy-900/8 bg-white/95 px-3.5 py-2.5 shadow-card backdrop-blur sm:-left-5">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-navy-900 text-gold-300">
               <Sparkle className="h-5 w-5" />
             </span>
@@ -157,7 +157,7 @@ export default function Hero() {
           </div>
 
           {/* vaccine count badge */}
-          <div className="animate-floaty absolute -left-3 top-5 flex items-center gap-2.5 rounded-2xl border border-navy-900/8 bg-white/95 px-3.5 py-2.5 shadow-card backdrop-blur sm:-left-6">
+          <div className="animate-floaty absolute -left-3 top-[55%] flex items-center gap-2.5 rounded-2xl border border-navy-900/8 bg-white/95 px-3.5 py-2.5 shadow-card backdrop-blur sm:-left-6">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-navy-900 text-gold-300">
               <SyringeShield className="h-5 w-5" />
             </span>
@@ -172,7 +172,7 @@ export default function Hero() {
           </div>
 
           {/* 4.8 ratings — no box, gold with 5 stars */}
-          <div className="animate-floaty absolute -left-3 top-[52%] flex flex-col items-start lg:top-[38%] sm:-left-5">
+          <div className="animate-floaty absolute -left-3 top-[30%] flex flex-col items-start sm:-left-5">
             <span className="flex gap-0.5">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="h-3.5 w-3.5 fill-gold-400 text-gold-400" />
@@ -189,7 +189,7 @@ export default function Hero() {
           </div>
 
           {/* ISTM Member — boxed */}
-          <div className="animate-floaty-slow absolute -right-3 top-5 flex items-center gap-2.5 rounded-2xl border border-navy-900/8 bg-white/95 px-3.5 py-2.5 shadow-card backdrop-blur sm:-right-5">
+          <div className="animate-floaty-slow absolute -left-3 top-[80%] flex items-center gap-2.5 rounded-2xl border border-navy-900/8 bg-white/95 px-3.5 py-2.5 shadow-card backdrop-blur sm:-left-5">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-navy-900 text-gold-300">
               <ShieldCheck className="h-5 w-5" />
             </span>
@@ -199,15 +199,6 @@ export default function Hero() {
               </span>
             </span>
           </div>
-
-          {/* Find us */}
-          <a
-            href="#visit"
-            className="group absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-navy-900 px-5 py-3 text-[0.8rem] font-semibold text-white shadow-card transition-colors hover:bg-navy-800 sm:bottom-5 sm:left-5"
-          >
-            Find us
-            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
-          </a>
 
           {/* walk-in tag */}
           <div className="animate-floaty-slow absolute -right-2 -bottom-5 flex items-center gap-1.5 rounded-full border border-navy-900/8 bg-gold-500 px-3.5 py-2 text-[0.72rem] font-bold text-navy-950 shadow-card sm:-right-5">
