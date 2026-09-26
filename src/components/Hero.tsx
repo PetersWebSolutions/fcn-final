@@ -11,19 +11,19 @@ import {
 } from "./Icons";
 
 const GALLERY_IMAGES = [
-  { src: "/images/clinic-hero.jpg", alt: "FCN clinic reception with navy armchairs" },
-  { src: "/images/review-photos/reception1.jpg", alt: "FCN reception area" },
-  { src: "/images/review-photos/reception2.jpg", alt: "FCN clinic interior" },
-  { src: "/images/review-photos/reception3.jpg", alt: "FCN vaccination area" },
-  { src: "/images/review-photos/reception4.jpg", alt: "FCN consultation room" },
-  { src: "/images/vaccine-prep.jpg", alt: "Vaccine preparation" },
+  { src: "/images/gallery1.jpeg", alt: "FCN clinic photo 1" },
+  { src: "/images/gallery2.jpeg", alt: "FCN clinic photo 2" },
+  { src: "/images/gallery3.jpeg", alt: "FCN clinic photo 3" },
+  { src: "/images/gallery4.jpg", alt: "FCN clinic photo 4" },
+  { src: "/images/gallery5.jpg", alt: "FCN clinic photo 5" },
+  { src: "/images/gallery6.jpg", alt: "FCN clinic photo 6" },
 ];
 
 export default function Hero() {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    const id = setInterval(() => setCurrent((c) => (c + 1) % GALLERY_IMAGES.length), 4000);
+    const id = setInterval(() => setCurrent((c) => (c + 1) % GALLERY_IMAGES.length), 3000);
     return () => clearInterval(id);
   }, []);
   return (
